@@ -1,0 +1,514 @@
+{
+  "format": "velxio-project",
+  "version": 1,
+  "boards": [
+    {
+      "id": "esp32",
+      "boardKind": "esp32",
+      "x": 434.75522666165,
+      "y": 143.4686400300995,
+      "activeFileGroupId": "group-esp32",
+      "languageMode": "arduino",
+      "serialBaudRate": 0
+    }
+  ],
+  "fileGroups": {
+    "group-esp32": [
+      {
+        "name": "sketch.ino",
+        "content": "#include <Wire.h>\n#include <Adafruit_SSD1306.h>\n#include <Adafruit_GFX.h>\n#include <DHT.h>\n\nconst int potPin = 35;\nconst int buttonPin = 14;\nconst int tempPin = 4;\nconst int motionPin = 27;\nconst int obstaclePin = 26;\n\n#define width 128\n#define height 64\n\nbool awake = false;\n\nAdafruit_SSD1306 display(width, height, &Wire, -1);\n\nDHT dht(tempPin, DHT11);\n\nvoid setup() {\n  Serial.begin(9600);\n  dht.begin();\n\n  pinMode(buttonPin, INPUT_PULLUP);\n  pinMode(motionPin, INPUT);\n\n  if(!display.begin(SSD1306_SWITCHCAPVCC,0x3C ))\n  {\n    Serial.println(\"SSD1306 allocation failed\");\n    for(;;);\n  }\n  delay(2000);\n  display.clearDisplay();\n  display.setTextSize(1);\n  display.setTextColor(WHITE);\n  display.setCursor(0,0);\n  display.println(\"Desk Buddy\");\n  display.display();\n  delay(250);\n}\n\nvoid loop() {\n\n  int LeyeMoveX = random(38,42);\n  int ReyeMoveX = LeyeMoveX + 48;\n  int YeyeMove = random(33,37);\n\n  \n  if (digitalRead(buttonPin) == HIGH || digitalRead(motionPin) == HIGH)\n  {\n    awake = true;\n  }\n  \n\n  if (awake == false)\n  {\n    display.clearDisplay();\n    display.drawLine(30,32,50,32, WHITE);\n    display.drawLine(78,32,98,32, WHITE);\n    display.display();\n  }\n\n\n  float temp = dht.readTemperature();\n\n  int sensitivity = analogRead(potPin);\n  int tempThreshold = map(sensitivity, 0,4095,20,35);\n\n  bool sweat = false;\n  if (temp > tempThreshold)\n  {\n    sweat = true;\n  }\n\n  if (awake == true)\n  {\n    display.clearDisplay();\n    display.fillCircle(40,32,10,WHITE);\n    display.fillCircle(88,32,10,WHITE);\n    display.fillCircle(LeyeMoveX,YeyeMove,5,BLACK);\n    display.fillCircle(ReyeMoveX,YeyeMove,5,BLACK);\n    display.display();\n  }\n\n  if (awake == true && sweat == true)\n  {\n    display.clearDisplay();\n    display.fillCircle(40,32,10,WHITE);\n    display.fillCircle(88,32,10,WHITE);\n    display.fillCircle(LeyeMoveX,YeyeMove,5,BLACK);\n    display.fillCircle(ReyeMoveX,YeyeMove,5,BLACK);\n    display.fillCircle(random(0,40),random(0,15),3,WHITE);\n    display.fillCircle(random(0,40),random(0,15),4,WHITE);\n    display.fillCircle(random(88,128),random(0,15),2,WHITE);\n    display.fillCircle(random(88,128),random(0,15),3,WHITE);\n    display.display();\n  }\n}\n"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "breadboard_full_1784023253316_unv5nxm46",
+      "metadataId": "breadboard-full",
+      "x": 679.3246952053381,
+      "y": 156.19489795010304,
+      "properties": {}
+    },
+    {
+      "id": "ssd1306_i2c_1784023263029_x9z687r75",
+      "metadataId": "ssd1306-i2c",
+      "x": 685.6238665954103,
+      "y": 413.76543313916426,
+      "properties": {
+        "protocol": "i2c"
+      }
+    },
+    {
+      "id": "potentiometer_1784023269662_iibxczd99",
+      "metadataId": "potentiometer",
+      "x": 1097.3246952053382,
+      "y": 139.69489795010304,
+      "properties": {
+        "min": 0,
+        "max": 1023,
+        "value": 580,
+        "step": 1,
+        "startDegree": -135,
+        "endDegree": 135
+      },
+      "attachedTo": {
+        "breadboardId": "breadboard_full_1784023253316_unv5nxm46",
+        "pinMap": {
+          "GND": "A45",
+          "SIG": "A46",
+          "VCC": "A47"
+        }
+      }
+    },
+    {
+      "id": "pushbutton_1784023273671_12x1cjsd9",
+      "metadataId": "pushbutton",
+      "x": 661.0246952053382,
+      "y": 236.69489795010307,
+      "properties": {
+        "color": "red",
+        "pressed": false,
+        "label": "",
+        "xray": false,
+        "rotation": 90
+      },
+      "attachedTo": {
+        "breadboardId": "breadboard_full_1784023253316_unv5nxm46",
+        "pinMap": {
+          "1.l": "D3",
+          "2.l": "D1",
+          "1.r": "H3",
+          "2.r": "H1"
+        }
+      }
+    },
+    {
+      "id": "pir_motion_sensor_1784023285104_162rjj040",
+      "metadataId": "pir-motion-sensor",
+      "x": 888.8071952053381,
+      "y": 116.19489795010304,
+      "properties": {},
+      "attachedTo": {
+        "breadboardId": "breadboard_full_1784023253316_unv5nxm46",
+        "pinMap": {
+          "VCC": "A24",
+          "OUT": "A25",
+          "GND": "A26"
+        }
+      }
+    },
+    {
+      "id": "dht11_1784023300474_ln7g2rszs",
+      "metadataId": "dht11",
+      "x": 811.1246952053382,
+      "y": 136.19489795010304,
+      "properties": {
+        "temperature": 25,
+        "humidity": 50
+      },
+      "attachedTo": {
+        "breadboardId": "breadboard_full_1784023253316_unv5nxm46",
+        "pinMap": {
+          "VCC": "A14",
+          "SDA": "A17",
+          "GND": "A19"
+        }
+      }
+    }
+  ],
+  "wires": [
+    {
+      "waypoints": [],
+      "id": "wire-1784023413594",
+      "start": {
+        "componentId": "esp32",
+        "pinName": "3V3",
+        "x": 568.75522666165,
+        "y": 350.4686400300995
+      },
+      "end": {
+        "componentId": "breadboard_full_1784023253316_unv5nxm46",
+        "pinName": "BP1",
+        "x": 710.3246952053381,
+        "y": 350.19489795010304
+      },
+      "color": "#cc0000"
+    },
+    {
+      "waypoints": [
+        {
+          "x": 638.5835047285887,
+          "y": 337.4686400300995
+        },
+        {
+          "x": 638.5835047285887,
+          "y": 361.8866956570978
+        },
+        {
+          "x": 710.3246952053381,
+          "y": 361.8866956570978
+        }
+      ],
+      "id": "wire-1784023417874",
+      "start": {
+        "componentId": "esp32",
+        "pinName": "GND2",
+        "x": 568.75522666165,
+        "y": 337.4686400300995
+      },
+      "end": {
+        "componentId": "breadboard_full_1784023253316_unv5nxm46",
+        "pinName": "BN1",
+        "x": 710.3246952053381,
+        "y": 363.19489795010304
+      },
+      "color": "#000000"
+    },
+    {
+      "waypoints": [],
+      "id": "wire-1784023651017",
+      "start": {
+        "componentId": "dht11_1784023300474_ln7g2rszs",
+        "pinName": "VCC",
+        "x": 835.1246952053382,
+        "y": 214.19489795010304
+      },
+      "end": {
+        "componentId": "breadboard_full_1784023253316_unv5nxm46",
+        "pinName": "BP14",
+        "x": 835.1246952053382,
+        "y": 350.19489795010304
+      },
+      "color": "#cc0000"
+    },
+    {
+      "waypoints": [],
+      "id": "wire-1784023656986",
+      "start": {
+        "componentId": "dht11_1784023300474_ln7g2rszs",
+        "pinName": "GND",
+        "x": 885.1246952053382,
+        "y": 214.19489795010304
+      },
+      "end": {
+        "componentId": "breadboard_full_1784023253316_unv5nxm46",
+        "pinName": "BN19",
+        "x": 883.1246952053381,
+        "y": 363.19489795010304
+      },
+      "color": "#000000"
+    },
+    {
+      "waypoints": [
+        {
+          "x": 859.7124995988606,
+          "y": 214.19489795010304
+        },
+        {
+          "x": 859.7124995988606,
+          "y": 104.54293378296357
+        },
+        {
+          "x": 617.4819025568665,
+          "y": 104.54293378296357
+        },
+        {
+          "x": 617.4819025568665,
+          "y": 299.4686400300995
+        }
+      ],
+      "id": "wire-1784023667163",
+      "start": {
+        "componentId": "dht11_1784023300474_ln7g2rszs",
+        "pinName": "SDA",
+        "x": 860.1246952053382,
+        "y": 214.19489795010304
+      },
+      "end": {
+        "componentId": "esp32",
+        "pinName": "4",
+        "x": 568.75522666165,
+        "y": 299.4686400300995
+      },
+      "color": "#32CD32"
+    },
+    {
+      "waypoints": [],
+      "id": "wire-1784023704064",
+      "start": {
+        "componentId": "ssd1306_i2c_1784023263029_x9z687r75",
+        "pinName": "GND",
+        "x": 751.6238665954103,
+        "y": 424.76543313916426
+      },
+      "end": {
+        "componentId": "breadboard_full_1784023253316_unv5nxm46",
+        "pinName": "BN5",
+        "x": 748.7246952053381,
+        "y": 363.19489795010304
+      },
+      "color": "#000000"
+    },
+    {
+      "waypoints": [],
+      "id": "wire-1784023707304",
+      "start": {
+        "componentId": "ssd1306_i2c_1784023263029_x9z687r75",
+        "pinName": "VCC",
+        "x": 761.6238665954103,
+        "y": 424.76543313916426
+      },
+      "end": {
+        "componentId": "breadboard_full_1784023253316_unv5nxm46",
+        "pinName": "BP6",
+        "x": 758.3246952053381,
+        "y": 350.19489795010304
+      },
+      "color": "#cc0000"
+    },
+    {
+      "waypoints": [
+        {
+          "x": 781.2124962706914,
+          "y": 425.47742037895586
+        },
+        {
+          "x": 781.2124962706914,
+          "y": 401.2767011070782
+        },
+        {
+          "x": 651.5065970580002,
+          "y": 401.2767011070782
+        },
+        {
+          "x": 651.5065970580002,
+          "y": 223.4686400300995
+        }
+      ],
+      "id": "wire-1784023714850",
+      "start": {
+        "componentId": "ssd1306_i2c_1784023263029_x9z687r75",
+        "pinName": "SDA",
+        "x": 781.6238665954103,
+        "y": 424.76543313916426
+      },
+      "end": {
+        "componentId": "esp32",
+        "pinName": "21",
+        "x": 568.75522666165,
+        "y": 223.4686400300995
+      },
+      "color": "#22c55e"
+    },
+    {
+      "waypoints": [
+        {
+          "x": 771.2124962706914,
+          "y": 390.9566344891077
+        },
+        {
+          "x": 721.453715246467,
+          "y": 390.9566344891077
+        },
+        {
+          "x": 668.1333710536194,
+          "y": 390.9566344891077
+        },
+        {
+          "x": 668.1333710536194,
+          "y": 185.4686400300995
+        }
+      ],
+      "id": "wire-1784023725347",
+      "start": {
+        "componentId": "ssd1306_i2c_1784023263029_x9z687r75",
+        "pinName": "SCL",
+        "x": 771.6238665954103,
+        "y": 424.76543313916426
+      },
+      "end": {
+        "componentId": "esp32",
+        "pinName": "22",
+        "x": 568.75522666165,
+        "y": 185.4686400300995
+      },
+      "color": "#22c55e"
+    },
+    {
+      "waypoints": [],
+      "id": "wire-1784023760528",
+      "start": {
+        "componentId": "pir_motion_sensor_1784023285104_162rjj040",
+        "pinName": "VCC",
+        "x": 930.9851952053381,
+        "y": 214.19489795010304
+      },
+      "end": {
+        "componentId": "breadboard_full_1784023253316_unv5nxm46",
+        "pinName": "BP24",
+        "x": 931.1246952053381,
+        "y": 350.19489795010304
+      },
+      "color": "#cc0000"
+    },
+    {
+      "waypoints": [],
+      "id": "wire-1784023763648",
+      "start": {
+        "componentId": "pir_motion_sensor_1784023285104_162rjj040",
+        "pinName": "GND",
+        "x": 950.448695205338,
+        "y": 214.19489795010304
+      },
+      "end": {
+        "componentId": "breadboard_full_1784023253316_unv5nxm46",
+        "pinName": "BN26",
+        "x": 950.3246952053381,
+        "y": 363.19489795010304
+      },
+      "color": "#000000"
+    },
+    {
+      "waypoints": [
+        {
+          "x": 940.3175913411308,
+          "y": 214.19489795010304
+        },
+        {
+          "x": 940.3175913411308,
+          "y": 27.39063058573462
+        },
+        {
+          "x": 361.0795371115343,
+          "y": 27.39063058573462
+        },
+        {
+          "x": 361.0795371115343,
+          "y": 286.4686400300995
+        }
+      ],
+      "id": "wire-1784023770145",
+      "start": {
+        "componentId": "pir_motion_sensor_1784023285104_162rjj040",
+        "pinName": "OUT",
+        "x": 940.7246952053381,
+        "y": 214.19489795010304
+      },
+      "end": {
+        "componentId": "esp32",
+        "pinName": "27",
+        "x": 440.75522666165,
+        "y": 286.4686400300995
+      },
+      "color": "#00FFFF"
+    },
+    {
+      "waypoints": [],
+      "id": "wire-1784023808918",
+      "start": {
+        "componentId": "potentiometer_1784023269662_iibxczd99",
+        "pinName": "GND",
+        "x": 1132.3246952053382,
+        "y": 214.19489795010304
+      },
+      "end": {
+        "componentId": "breadboard_full_1784023253316_unv5nxm46",
+        "pinName": "BN45",
+        "x": 1132.724695205338,
+        "y": 363.19489795010304
+      },
+      "color": "#000000"
+    },
+    {
+      "waypoints": [],
+      "id": "wire-1784023819063",
+      "start": {
+        "componentId": "potentiometer_1784023269662_iibxczd99",
+        "pinName": "VCC",
+        "x": 1152.3246952053382,
+        "y": 214.19489795010304
+      },
+      "end": {
+        "componentId": "breadboard_full_1784023253316_unv5nxm46",
+        "pinName": "BP47",
+        "x": 1151.9246952053381,
+        "y": 350.19489795010304
+      },
+      "color": "#cc0000"
+    },
+    {
+      "waypoints": [
+        {
+          "x": 1141.9124746960094,
+          "y": 52.705684563222
+        },
+        {
+          "x": 384.00775368191574,
+          "y": 52.705684563222
+        },
+        {
+          "x": 384.00775368191574,
+          "y": 223.4686400300995
+        }
+      ],
+      "id": "wire-1784023904899",
+      "start": {
+        "componentId": "potentiometer_1784023269662_iibxczd99",
+        "pinName": "SIG",
+        "x": 1142.3246952053382,
+        "y": 214.19489795010304
+      },
+      "end": {
+        "componentId": "esp32",
+        "pinName": "35",
+        "x": 440.75522666165,
+        "y": 223.4686400300995
+      },
+      "color": "#22c55e"
+    },
+    {
+      "waypoints": [],
+      "id": "wire-1784039973810",
+      "start": {
+        "componentId": "pushbutton_1784023273671_12x1cjsd9",
+        "pinName": "1.l",
+        "x": 729.5246952053382,
+        "y": 244.19489795010304
+      },
+      "end": {
+        "componentId": "esp32",
+        "pinName": "14",
+        "x": 440.75522666165,
+        "y": 299.4686400300995
+      },
+      "color": "#22c55e"
+    },
+    {
+      "waypoints": [
+        {
+          "x": 716.1985240085336,
+          "y": 311.19489795010304
+        },
+        {
+          "x": 716.1985240085336,
+          "y": 363.19489795010304
+        }
+      ],
+      "id": "wire-1784040025593",
+      "start": {
+        "componentId": "pushbutton_1784023273671_12x1cjsd9",
+        "pinName": "2.r",
+        "x": 710.5246952053382,
+        "y": 311.19489795010304
+      },
+      "end": {
+        "componentId": "breadboard_full_1784023253316_unv5nxm46",
+        "pinName": "BN3",
+        "x": 729.5246952053382,
+        "y": 363.19489795010304
+      },
+      "color": "#000000"
+    }
+  ],
+  "activeBoardId": "esp32",
+  "ignoreStock": false
+}
