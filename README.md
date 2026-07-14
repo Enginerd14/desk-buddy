@@ -2,7 +2,7 @@
 
 
 
-
+![Desk Buddy](screenshot.png)
 
 
 > Built in [Breadboard](https://breadboard.hackclub.com), a Hack Club program. This project took ~3.7 hours of work.
@@ -11,7 +11,10 @@
 
 ## What It Does
 
-Desk Buddy
+A desk buddy system
+- Use button or motion sensor to wake up your desk buddy
+- Use poteniometer to adjust senstivity to temperature
+- if temperature increases above threshold value set buy potentiometer, desk buddy will start sweating until temperature decreases
 
 
 ## How It Works
