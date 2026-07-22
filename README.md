@@ -25,8 +25,8 @@ The circuit is captured in `breadboard-project.json`, and the firmware that runs
 ## How To Use It
 
 - Use button or motion sensor to wake up your desk buddy
-- Use poteniometer to adjust senstivity to temperature
-- if temperature increases above threshold value set buy potentiometer, desk buddy will start sweating until temperature decreases
+- Use potentiometer to adjust sensitivity to temperature
+- if temperature increases above threshold value set buy potentiometer, desk buddy will start sweating, LED will turn red and buzzer will sound an alarm until temperature decreases
 
 
 ## Demo
@@ -45,10 +45,13 @@ The editor snapshot is in `breadboard-project.json`.
 | Part | Quantity |
 | --- | --- |
 | breadboard-full | 1 |
+| buzzer-active | 1 |
 | dht11 | 1 |
 | pir-motion-sensor | 1 |
 | potentiometer | 1 |
 | pushbutton | 1 |
+| resistor | 3 |
+| rgb-led | 1 |
 | ssd1306-i2c | 1 |
 
 
