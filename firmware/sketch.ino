@@ -7,7 +7,10 @@ const int potPin = 35;
 const int buttonPin = 14;
 const int tempPin = 4;
 const int motionPin = 27;
-const int obstaclePin = 26;
+const int RledPin = 26;
+const int GledPin = 25;
+const int BledPin = 33;
+const int BuzzerPin = 32;
 
 #define width 128
 #define height 64
@@ -24,6 +27,12 @@ void setup() {
 
   pinMode(buttonPin, INPUT_PULLUP);
   pinMode(motionPin, INPUT);
+
+  pinMode(RledPin,OUTPUT);
+  pinMode(GledPin, OUTPUT);
+  pinMode(BledPin, OUTPUT);
+  
+  pinMode(BuzzerPin, OUTPUT);
 
   if(!display.begin(SSD1306_SWITCHCAPVCC,0x3C ))
   {
@@ -59,6 +68,9 @@ void loop() {
     display.drawLine(30,32,50,32, WHITE);
     display.drawLine(78,32,98,32, WHITE);
     display.display();
+    digitalWrite(RledPin, LOW);
+    digitalWrite(GledPin, LOW);
+    digitalWrite(BledPin, LOW);
   }
 
 
@@ -81,6 +93,7 @@ void loop() {
     display.fillCircle(LeyeMoveX,YeyeMove,5,BLACK);
     display.fillCircle(ReyeMoveX,YeyeMove,5,BLACK);
     display.display();
+    digitalWrite(GledPin, HIGH);
   }
 
   if (awake == true && sweat == true)
@@ -95,5 +108,18 @@ void loop() {
     display.fillCircle(random(88,128),random(0,15),2,WHITE);
     display.fillCircle(random(88,128),random(0,15),3,WHITE);
     display.display();
+    digitalWrite(GledPin, LOW);
+    digitalWrite(RledPin, HIGH);
+    digitalWrite(BuzzerPin, HIGH);
+    delay(250);
+    digitalWrite(BuzzerPin, LOW);
+    delay(250);
+  }
+
+  if (sweat == false)
+  {
+    digitalWrite(RledPin, LOW);
+    digitalWrite(GledPin, HIGH);
+    digitalWrite(BuzzerPin, LOW);
   }
 }
