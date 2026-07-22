@@ -15,3 +15,9 @@ So I tried using cooler robot eyes but I couldn't get it to work and it seemed p
 ## Jul 14, 2026, 2:20 PM
 
 I decided to remove the blinking feature because it was messing with the other parts. I am now trying to just touch up on the animations and reaction to sensors to finish off
+
+---
+
+## Jul 22, 2026, 9:03 PM
+
+I decided to add an RGB LED as an output. I'm thinking it will be green when the buddy wakes up and then when its hot/sweating it will turn red.
