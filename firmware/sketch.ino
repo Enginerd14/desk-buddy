@@ -47,7 +47,7 @@ void loop() {
   int YeyeMove = random(33,37);
 
   
-  if (digitalRead(buttonPin) == HIGH || digitalRead(motionPin) == HIGH)
+  if (digitalRead(buttonPin) == LOW || digitalRead(motionPin) == HIGH)
   {
     awake = true;
   }
